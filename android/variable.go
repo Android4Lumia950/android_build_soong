@@ -42,11 +42,20 @@ type variableProperties struct {
 			Enabled *bool `android:"arch_variant"`
 		} `android:"arch_variant"`
 
+		Malloc_use_scudo struct {
+			Cflags              []string `android:"arch_variant"`
+			Shared_libs         []string `android:"arch_variant"`
+			Whole_static_libs   []string `android:"arch_variant"`
+			Exclude_static_libs []string `android:"arch_variant"`
+		} `android:"arch_variant"`
+		
+		
 		Malloc_not_svelte struct {
 			Cflags              []string `android:"arch_variant"`
 			Shared_libs         []string `android:"arch_variant"`
 			Whole_static_libs   []string `android:"arch_variant"`
 			Exclude_static_libs []string `android:"arch_variant"`
+			Header_libs         []string `android:"arch_variant"`
 		} `android:"arch_variant"`
 
 		Malloc_not_svelte_libc32 struct {
@@ -213,6 +222,7 @@ type productVariables struct {
 	Allow_missing_dependencies       *bool `json:",omitempty"`
 	Unbundled_build                  *bool `json:",omitempty"`
 	Unbundled_build_sdks_from_source *bool `json:",omitempty"`
+	Malloc_use_scudo                 *bool `json:",omitempty"`
 	Malloc_not_svelte                *bool `json:",omitempty"`
 	Malloc_not_svelte_libc32         *bool `json:",omitempty"`
 	Safestack                        *bool `json:",omitempty"`
@@ -246,8 +256,6 @@ type productVariables struct {
 	EnableCFI       *bool    `json:",omitempty"`
 	CFIExcludePaths []string `json:",omitempty"`
 	CFIIncludePaths []string `json:",omitempty"`
-
-	DisableScudo *bool `json:",omitempty"`
 
 	Experimental_mte *bool `json:",omitempty"`
 
@@ -387,7 +395,7 @@ func (v *productVariables) SetDefaultConfig() {
 		AAPTPreferredConfig: stringPtr("xhdpi"),
 		AAPTCharacteristics: stringPtr("nosdcard"),
 		AAPTPrebuiltDPI:     []string{"xhdpi", "xxhdpi"},
-
+		Malloc_use_scudo:         boolPtr(false),
 		Malloc_not_svelte:        boolPtr(true),
 		Malloc_not_svelte_libc32: boolPtr(true),
 		Safestack:                boolPtr(false),
